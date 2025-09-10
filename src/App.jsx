@@ -142,14 +142,28 @@ function App() {
         <div>
             <Formik
                 initialValues={formValues}
+                validate={(values) => {
+                    const errors = {};
+                    if (!values.name) {
+                        errors.name = "name is required";
+
+                    } else if (values.name.length <3) {
+                        errors.name = "Name must be at least 3 characters long.";
+                    }
+                    return errors;
+                }}
+
+
                 onSubmit={(values) => {
                     console.log(values);
                 }}
             >
-                {({ values }) => (
+                {({ values,errors,touched }) => (
                     <Form>
                         <label>Name:</label>
                         <Field name="name" type="text" />
+                        {/* show error only if field is touched */}
+                        {errors.name && touched.name && (<p style={{color:"red"}}>{errors.name}</p>)}
                         <br /><br />
 
                         <label>Phone:</label>
